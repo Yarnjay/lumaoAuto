@@ -10,7 +10,10 @@
 5、执行代码：按下 Enter 键运行代码。<br/>
 
 ### 停止
-关闭打开onprover的网页页签即可
+关闭打开onprover的网页页签即可<br/>
+或者<br/>
+在Console/控制台中执行：<br/>
+`stop()；`
 
 ### 代码
 ```
@@ -30,9 +33,16 @@ function clickProverButtons() {
             console.log(`[${currentTime}] ！！！已重启！！！`);
         }
     });
-    console.log(`[${currentTime}]`);
+    console.log(`[${currentTime}] 自动监控中...`);
+}
+
+// 停止定时器的函数
+function stop() {
+    clearInterval(clickProverButtonInterval);
+    console.log('监控已停止.');
 }
 
 // 启动监控
 clickProverButtons()
+
 ```
