@@ -34,8 +34,6 @@ function clickButton() {
             console.log(`[${currentTime}] ！！！已重启！！！`);
         } else {
             console.log(`[${currentTime}] ！！！监控出错了，请联系管理员[未找到按钮]`);
-
-            console.log('未找到按钮');
         }
     };
     console.log(`[${currentTime}] 自动监控中...`);
