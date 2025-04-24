@@ -37,7 +37,7 @@ function clickButton() {
         let currentTime = new Date().toLocaleString();
 
         // 检查按钮状态
-        if (stopCount >= 2) {
+        if (stopCount >= 3) {
             clearInterval(checkButtonStatus); // 停止检查
             return; // 退出函数
         }
