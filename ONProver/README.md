@@ -30,15 +30,15 @@ function clickButton() {
     button.click(); // 点击按钮
 
     let startTime = Date.now(); // 获取当前时间戳
+    let stopCount = 0; // 计数器，记录“Stop proving”的次数
 
     // 使用 setInterval 定期检查按钮状态
     const checkButtonStatus = setInterval(() => {
         let currentTime = new Date().toLocaleString();
 
         // 检查按钮状态
-        if (button.textContent === "Stop proving") {
+        if (stopCount >= 2) {
             clearInterval(checkButtonStatus); // 停止检查
-            console.log(`${currentTime} 启动完成`);
             return; // 退出函数
         }
 
@@ -52,6 +52,10 @@ function clickButton() {
                 break;
             case 'Compiling ...':
                 console.log(`${currentTime} 启动中...`);
+                break;
+            case 'Stop proving':
+                stopCount++; // 增加计数器
+                console.log(`${currentTime} 启动成功，计数: ${stopCount}`);
                 break;
             default:
                 console.log(`未知的按钮状态: ${button.textContent}`);
