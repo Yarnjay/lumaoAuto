@@ -18,31 +18,42 @@
 ### 代码
 ```
 // 定义变量存储 setInterval 的返回值
-const clickProverButtonInterval = setInterval(() => {
-    clickProverButtons();
-}, 30*1000); // 每 30 秒检查一次
+const clickButtonInterval = setInterval(() => {
+    clickButton();
+}, 60 * 1000); // 每 60 秒重启一次
 
 // 创建一个函数来点击按钮
-function clickProverButtons() {
-    const currentTime = new Date().toLocaleString();
-    const buttons = document.querySelectorAll('button');
+function clickButton() {
+    const button = document.querySelector('button.group');
+    button.click(); // 点击按钮
 
-    buttons.forEach(button => {
-        if (button.textContent.includes('prover')) {
-            button.click(); // 点击按钮
-            console.log(`[${currentTime}] ！！！已重启！！！`);
+    let startTime = Date.now(); // 获取当前时间戳
+
+    while (button.textContent === "Stop proving") {
+        let currentTime = new Date().toLocaleString();
+
+        switch (button.textContent) {
+            case 'prover':
+                console.log(`${currentTime} 点击启动`);
+                button.click();
+                break;
+            case 'Canceling...':
+                console.log(`${currentTime} 取消中...`);
+                break;
+            default:
+                console.log(`未知的按钮状态: ${button.textContent}`);
+                break; // 确保 default 语句后有 break
         }
-    });
-    console.log(`[${currentTime}] 自动监控中...`);
+    }
 }
 
 // 停止定时器的函数
 function stop() {
-    clearInterval(clickProverButtonInterval);
+    clearInterval(clickButtonInterval);
     console.log('监控已停止.');
 }
 
 // 启动监控
-clickProverButtons()
+clickButton();
 
 ```
