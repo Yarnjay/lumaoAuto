@@ -17,7 +17,7 @@
 
 ### 代码
 ```
-const interval = 6 * 60 * 1000; // 每X分钟重启一次
+const interval = 4 * 60 * 1000; // 每X分钟重启一次
 
 // 定义变量存储 setInterval 的返回值
 const clickButtonInterval = setInterval(() => {
