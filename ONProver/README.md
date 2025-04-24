@@ -17,10 +17,12 @@
 
 ### 代码
 ```
+const interval = 2 * 60 * 1000; // 每1分钟重启一次
+
 // 定义变量存储 setInterval 的返回值
 const clickButtonInterval = setInterval(() => {
     clickButton();
-}, 60 * 1000); // 每 60 秒重启一次
+}, interval);
 
 // 创建一个函数来点击按钮
 function clickButton() {
@@ -29,8 +31,17 @@ function clickButton() {
 
     let startTime = Date.now(); // 获取当前时间戳
 
-    while (button.textContent === "Stop proving") {
+    // 使用 setInterval 定期检查按钮状态
+    const checkButtonStatus = setInterval(() => {
         let currentTime = new Date().toLocaleString();
+
+        // 检查按钮状态
+        if (button.textContent === "Stop proving" || (Date.now() - startTime) >= 30 * 1000) {
+
+            clearInterval(checkButtonStatus); // 停止检查
+            console.log(`${currentTime} 启动完成`);
+            return; // 退出函数
+        }
 
         switch (button.textContent) {
             case 'prover':
@@ -40,11 +51,15 @@ function clickButton() {
             case 'Canceling...':
                 console.log(`${currentTime} 取消中...`);
                 break;
+            case 'Compiling ...':
+                console.log(`${currentTime} 启动中...`);
+                break;
             default:
                 console.log(`未知的按钮状态: ${button.textContent}`);
                 break; // 确保 default 语句后有 break
         }
-    }
+    }, 1000); // 每 1 秒检查一次按钮状态
+
 }
 
 // 停止定时器的函数
@@ -55,5 +70,4 @@ function stop() {
 
 // 启动监控
 clickButton();
-
 ```
