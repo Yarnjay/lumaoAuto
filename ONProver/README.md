@@ -17,7 +17,7 @@
 
 ### 代码
 ```
-const interval = 2 * 60 * 1000; // 每1分钟重启一次
+const interval = 3 * 60 * 1000; // 每X分钟重启一次
 
 // 定义变量存储 setInterval 的返回值
 const clickButtonInterval = setInterval(() => {
@@ -36,8 +36,7 @@ function clickButton() {
         let currentTime = new Date().toLocaleString();
 
         // 检查按钮状态
-        if (button.textContent === "Stop proving" || (Date.now() - startTime) >= 30 * 1000) {
-
+        if (button.textContent === "Stop proving") {
             clearInterval(checkButtonStatus); // 停止检查
             console.log(`${currentTime} 启动完成`);
             return; // 退出函数
