@@ -11,6 +11,12 @@
 
 (function() {
     'use strict';
+    const pageLoadDelay = getRandom(8, 15);	//单位：秒；8秒 到 15秒取随机数，页面加载后等待一段时间在连，建议8秒以上；
+    const checkDelay = 10; // 单位：秒；
+    const disconnectTimeout = getRandom(10, 30); // 单位：分钟；
+    let startTime = 0;
+    
+
     // 创建日志面板
     const logPanel = document.createElement('div');
     Object.assign(logPanel.style, {
@@ -28,6 +34,8 @@
         lineHeight: '1.5',
         fontFamily: 'monospace'
     });
+
+    // 将日志面板添加到文档中
     document.body.appendChild(logPanel);
 
     // 保留原始console.log
@@ -50,11 +58,8 @@
         }
     };
 
-    const pageLoadDelay = getRandom(8, 15);	//单位：秒；8秒 到 15秒取随机数，页面加载后等待一段时间在连，建议8秒以上；
-    const checkDelay = 10; // 单位：秒；
-    const disconnectTimeout = 15; // 单位：分钟；
 
-    let startTime = 0;
+    // title.textContent = '断联' + ${disconnectTimeout} + '分钟后刷新'
 
     console.log("ONProverAuto脚本加载中...")
     start();
