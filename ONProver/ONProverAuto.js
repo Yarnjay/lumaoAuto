@@ -24,7 +24,7 @@
         position: 'fixed',
         right: '10px',
         bottom: '10px',
-        width: '650px',
+        width: '700px',
         height: '200px',
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         padding: '10px',
