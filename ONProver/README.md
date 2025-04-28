@@ -1,48 +1,31 @@
 # ONProver
 网址：https://onprover.orochi.network/
 
-### 启动
+### 1、真人验证配置
+** 在小火箭中添加如下规则，确保访问后真人验证可自动通过 ** <br/>
+<img width="352" alt="image" src="https://github.com/user-attachments/assets/ffef986a-a6fd-4362-964b-0f3fea69fc8d" />
 
-1、打开网页：访问 https://onprover.orochi.network/。<br/>
-2、打开开发者工具：在 Chrome 中，右键点击网页并选择“检查”或按 F12。<br/>
-3、切换到控制台：选择“Console/控制台”标签。<br/>
-4、粘贴代码：将上面的代码粘贴到“Console/控制台”中。<br/>
-5、执行代码：按下 Enter 键运行代码。<br/>
+
+### 2、安装tampermonkey
+在 Chrom Google 扩展商店中查找 tampermonkey 并安装；<br/>
+https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebhmkfjojejmpbldmpobfkfo
+
+### 2、配置tampermonkey
+1、打开 管理面板<br/>
+<img width="190" alt="image" src="https://github.com/user-attachments/assets/48a334d2-9a41-478d-933b-9fdb7154f444" />
+2、打开 使用工具<br/>
+<img width="1220" alt="image" src="https://github.com/user-attachments/assets/3cb1aac2-c8b1-4766-8528-e4b072b45bc0" />
+3、安装脚本<br/>
+1、从 github 中复制 ONProverAuto.js 的地址；<br/>
+2、在实用工具中选择从 “从 URL 安装” 输入地址点击安装；<br/>
+3、启用脚本；<br/>
+
 
 ### 停止
-关闭打开onprover的网页页签即可<br/>
-或者<br/>
-在Console/控制台中执行：<br/>
-`stop()；`
+在配置tampermonkey 的【管理面板】中关闭<br/>
+<img width="775" alt="image" src="https://github.com/user-attachments/assets/bfd52be3-eb65-48b2-93df-fa2e9ca56929" />
 
-### 代码
-```
-// 定义变量存储 setInterval 的返回值
-const clickProverButtonInterval = setInterval(() => {
-    clickProverButtons();
-}, 30*1000); // 每 30 秒检查一次
 
-// 创建一个函数来点击按钮
-function clickProverButtons() {
-    const currentTime = new Date().toLocaleString();
-    const buttons = document.querySelectorAll('button');
 
-    buttons.forEach(button => {
-        if (button.textContent.includes('prover')) {
-            button.click(); // 点击按钮
-            console.log(`[${currentTime}] ！！！已重启！！！`);
-        }
-    });
-    console.log(`[${currentTime}] 自动监控中...`);
-}
 
-// 停止定时器的函数
-function stop() {
-    clearInterval(clickProverButtonInterval);
-    console.log('监控已停止.');
-}
 
-// 启动监控
-clickProverButtons()
-
-```
