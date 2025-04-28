@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ONProverAuto
 // @namespace    https://onprover.orochi.network/
-// @version      v20250428
+// @version      v20250428-1
 // @description  Happy day
 // @author       YuanJay
 // @match        https://onprover.orochi.network/*
@@ -82,7 +82,7 @@
                 if (result) {
                     console.log(`${currentTime()} 按钮点击成功，继续执行后续操作...`);
                     const interval = setInterval(() => {
-                        const current = getStats();
+                        const current = getStatus();
                         const timeDiff = Date.now() - startTime
                         console.log(`${currentTime()} [状态更新] 收益: ${current.earned} | 验证: ${current.proofs} | 新增: ${current.new} ｜ 已运行[${convertMilliseconds(timeDiff)}]`);
 
@@ -145,7 +145,7 @@
         return new Date().toLocaleString();
     };
 
-    function getStats() {
+    function getStatus() {
         const stats = document.querySelectorAll('p.text-24');
         if (stats.length < 3) return null; // 确保至少有三个统计项
         return {
