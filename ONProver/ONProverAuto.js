@@ -13,9 +13,9 @@
     'use strict';
     init();
     function init() {
-        let pageLoadDelay = getRandomSeconds(8, 15) * 1000;	//页面加载完成后多长时间执行
-        let checkDelay = 2 * 1000; // 2 秒检查 1 次按钮的状态
-        let refreshDelay = getRandomSeconds(30, 60) * 60 * 1000;	//页面加载完成后多长时间执行
+        let pageLoadDelay = getRandomSeconds(8, 15) * 1000;	//8秒 到 15秒取随机数，页面加载后等待一段时间在连，建议8秒以上；
+        let refreshDelay = getRandomSeconds(30, 60) * 60 * 1000;	//30分钟 到 60分钟取随机自动刷新页面重连， 可根据自身网络情况配置，不建议太低，容易被墙；
+        let checkDelay = 2 * 1000; // 2 秒检查 1 次按钮的状态 不建议修改
 
         console.log('等待[' + convertMilliseconds(pageLoadDelay) + ']后开始启动...');
 
