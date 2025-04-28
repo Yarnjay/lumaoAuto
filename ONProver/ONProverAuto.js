@@ -95,7 +95,7 @@
                             stuckTime = stuckCounter * checkDelay * 1000
 
                             if (stuckTime >= disconnectTimeout * 60 * 1000 / 2) {
-                                console.log(`${currentTime()} [卡顿警告] ${convertMilliseconds(stuckTime)} 无变化`);
+                                console.log(`${currentTime()} [卡顿警告] ${convertMilliseconds(stuckTime)} 无变化, ${convertMilliseconds(disconnectTimeout * 60 * 1000 - stuckTime)}后重启！`);
                             }
 
                         } else {
