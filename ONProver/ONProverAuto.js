@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ONProverAuto
 // @namespace    https://onprover.orochi.network/
-// @version      v20250428
+// @version      v20250428-10
 // @description  Happy day
 // @author       YuanJay
 // @match        https://onprover.orochi.network/*
