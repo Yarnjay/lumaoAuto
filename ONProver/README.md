@@ -1,76 +1,31 @@
 # ONProver
 网址：https://onprover.orochi.network/
 
-### 启动
+### 1、真人验证配置
+** 在小火箭中添加如下规则，确保访问后真人验证可自动通过 ** <br/>
+<img width="352" alt="image" src="https://github.com/user-attachments/assets/ffef986a-a6fd-4362-964b-0f3fea69fc8d" />
 
-1、打开网页：访问 https://onprover.orochi.network/。<br/>
-2、打开开发者工具：在 Chrome 中，右键点击网页并选择“检查”或按 F12。<br/>
-3、切换到控制台：选择“Console/控制台”标签。<br/>
-4、粘贴代码：将上面的代码粘贴到“Console/控制台”中。<br/>
-5、执行代码：按下 Enter 键运行代码。<br/>
+
+### 2、安装tampermonkey
+在 Chrom Google 扩展商店中查找 tampermonkey 并安装；<br/>
+https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebhmkfjojejmpbldmpobfkfo
+
+### 2、配置tampermonkey
+1、打开 管理面板<br/>
+<img width="190" alt="image" src="https://github.com/user-attachments/assets/48a334d2-9a41-478d-933b-9fdb7154f444" />
+2、打开 使用工具<br/>
+<img width="1220" alt="image" src="https://github.com/user-attachments/assets/3cb1aac2-c8b1-4766-8528-e4b072b45bc0" />
+3、安装脚本<br/>
+1、从 github 中复制 ONProverAuto.js 的地址；<br/>
+2、在实用工具中选择从 “从 URL 安装” 输入地址点击安装；<br/>
+3、启用脚本；<br/>
+
 
 ### 停止
-方法 1：关闭打开onprover的网页页签即可<br/>
-方法 2：在“Console/控制台”中执行：`stop()；`<br/>
-方案 3：刷新页面，重新加载即可停止<br/>
+在配置tampermonkey 的【管理面板】中关闭<br/>
+<img width="775" alt="image" src="https://github.com/user-attachments/assets/bfd52be3-eb65-48b2-93df-fa2e9ca56929" />
 
 
-### 代码
-```
-const interval = 4 * 60 * 1000; // 每X分钟重启一次
 
-// 定义变量存储 setInterval 的返回值
-const clickButtonInterval = setInterval(() => {
-    clickButton();
-}, interval);
 
-// 创建一个函数来点击按钮
-function clickButton() {
-    const button = document.querySelector('button.group');
-    button.click(); // 点击按钮
 
-    let startTime = Date.now(); // 获取当前时间戳
-    let stopCount = 0; // 计数器，记录“Stop proving”的次数
-
-    // 使用 setInterval 定期检查按钮状态
-    const checkButtonStatus = setInterval(() => {
-        let currentTime = new Date().toLocaleString();
-
-        // 检查按钮状态
-        if (stopCount >= 3) {
-            clearInterval(checkButtonStatus); // 停止检查
-            return; // 退出函数
-        }
-
-        switch (button.textContent) {
-            case 'prover':
-                console.log(`${currentTime} 点击启动`);
-                button.click();
-                break;
-            case 'Canceling...':
-                console.log(`${currentTime} 取消中...`);
-                break;
-            case 'Compiling ...':
-                console.log(`${currentTime} 启动中...`);
-                break;
-            case 'Stop proving':
-                stopCount++; // 增加计数器
-                console.log(`${currentTime} 启动成功，计数: ${stopCount}`);
-                break;
-            default:
-                console.log(`未知的按钮状态: ${button.textContent}`);
-                break; // 确保 default 语句后有 break
-        }
-    }, 1000); // 每 1 秒检查一次按钮状态
-
-}
-
-// 停止定时器的函数
-function stop() {
-    clearInterval(clickButtonInterval);
-    console.log('监控已停止.');
-}
-
-// 启动监控
-clickButton();
-```
