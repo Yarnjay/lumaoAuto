@@ -11,11 +11,12 @@
 
 (function() {
     'use strict';
+    const disconnectTimeout = getRandom(10, 30); // 单位：分钟； 断联超时重新刷新页面的时间
+
     const pageLoadDelay = getRandom(8, 15);	//单位：秒；8秒 到 15秒取随机数，页面加载后等待一段时间在连，建议8秒以上；
-    const checkDelay = 10; // 单位：秒；
-    const disconnectTimeout = getRandom(10, 30); // 单位：分钟；
+    const checkDelay = 10; // 单位：秒； 状态检测间隔，不建议修改
     let startTime = 0;
-    
+
 
     // 创建日志面板
     const logPanel = document.createElement('div');
