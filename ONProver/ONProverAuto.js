@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ONProverAuto
 // @namespace    https://onprover.orochi.network/
-// @version      v20250428
+// @version      v20250428-10
 // @description  Happy day
 // @author       YuanJay
 // @match        https://onprover.orochi.network/*
@@ -22,7 +22,7 @@
     const logPanel = document.createElement('div');
     Object.assign(logPanel.style, {
         position: 'fixed',
-        right: '10px',
+        left: '10px',
         bottom: '10px',
         width: '700px',
         height: '200px',
@@ -82,7 +82,7 @@
                 if (result) {
                     console.log(`${currentTime()} 按钮点击成功，继续执行后续操作...`);
                     const interval = setInterval(() => {
-                        const current = getStats();
+                        const current = getStatus();
                         const timeDiff = Date.now() - startTime
                         console.log(`${currentTime()} [状态更新] 收益: ${current.earned} | 验证: ${current.proofs} | 新增: ${current.new} ｜ 已运行[${convertMilliseconds(timeDiff)}]`);
 
@@ -95,7 +95,7 @@
                             stuckTime = stuckCounter * checkDelay * 1000
 
                             if (stuckTime >= disconnectTimeout * 60 * 1000 / 2) {
-                                console.log(`${currentTime()} [卡顿警告] ${convertMilliseconds(stuckTime)} 无变化`);
+                                console.log(`${currentTime()} [卡顿警告] ${convertMilliseconds(stuckTime)} 无变化, ${convertMilliseconds(disconnectTimeout * 60 * 1000 - stuckTime)}后重启！`);
                             }
 
                         } else {
@@ -145,7 +145,7 @@
         return new Date().toLocaleString();
     };
 
-    function getStats() {
+    function getStatus() {
         const stats = document.querySelectorAll('p.text-24');
         if (stats.length < 3) return null; // 确保至少有三个统计项
         return {
