@@ -16,9 +16,11 @@ https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebh
 2、打开 使用工具<br/>
 <img width="1220" alt="image" src="https://github.com/user-attachments/assets/3cb1aac2-c8b1-4766-8528-e4b072b45bc0" />
 3、安装脚本<br/>
-1、从 github 中复制 ONProverAuto.js 的地址；<br/>
-2、在实用工具中选择从 “从 URL 安装” 输入地址点击安装；<br/>
+1、从 github 中下载 ONProverAuto.js；<br/>
+2、在实用工具中选择从 “导入” 导入脚本；<br/>
 3、启用脚本；<br/>
+4、访问网站：https://onprover.orochi.network/
+
 
 
 ### 停止
