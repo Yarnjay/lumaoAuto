@@ -22,7 +22,7 @@
     const logPanel = document.createElement('div');
     Object.assign(logPanel.style, {
         position: 'fixed',
-        right: '10px',
+        left: '10px',
         bottom: '10px',
         width: '700px',
         height: '200px',
