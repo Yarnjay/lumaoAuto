@@ -75,7 +75,7 @@
         let stuckTime = 0;
 
         // 等待页面加载完成后再启动
-        console.log('等待[' + convertMilliseconds(pageLoadDelay * 1000) + ']后开始启动...');
+        console.log('等待[' + formatToChineseTime(pageLoadDelay * 1000) + ']后开始启动...');
 
         setTimeout(() => {
             console.log(`${currentTime()} 页面加载完成，自动点击[Prover]按钮...`);
@@ -88,7 +88,7 @@
                     const interval = setInterval(() => {
                         const current = getStatus();
                         const timeDiff = Date.now() - startTime
-                        console.log(`${currentTime()} [状态更新] 收益: ${current.earned} | 验证: ${current.proofs} | 新增: ${current.new} ｜ 已运行[${convertMilliseconds(timeDiff)}]`);
+                        console.log(`${currentTime()} [状态更新] 收益: ${current.earned} | 验证: ${current.proofs} | 新增: ${current.new} ｜ 已运行[${formatToChineseTime(timeDiff)}]`);
 
                         if (
                             current.earned === lastStats.earned &&
@@ -99,7 +99,7 @@
                             stuckTime = stuckCounter * checkDelay * 1000
 
                             if (stuckTime >= disconnectTimeout * 60 * 1000 / 2) {
-                                console.log(`${currentTime()} [卡顿警告] ${convertMilliseconds(stuckTime)} 无变化, ${convertMilliseconds(disconnectTimeout * 60 * 1000 - stuckTime)}后重启！`);
+                                console.log(`${currentTime()} [卡顿警告] ${formatToChineseTime(stuckTime)} 无变化, ${formatToChineseTime(disconnectTimeout * 60 * 1000 - stuckTime)}后重启！`);
                             }
 
                         } else {
@@ -108,7 +108,7 @@
                         }
 
                         if (stuckTime >= disconnectTimeout * 60 * 1000) {
-                            console.log(`${currentTime()} [页面刷新] 检测到[${convertMilliseconds(stuckCounter * checkDelay * 1000)}]无响应，正在刷新...`);
+                            console.log(`${currentTime()} [页面刷新] 检测到[${formatToChineseTime(stuckCounter * checkDelay * 1000)}]无响应，正在刷新...`);
                             location.reload();
                         }
 
@@ -127,22 +127,25 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    function convertMilliseconds(ms) {
+    function formatToChineseTime(ms) {
+        if (isNaN(ms)) return "";
+
         const seconds = Math.floor(ms / 1000);
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const remainingSeconds = seconds % 60;
-        let result = "";
-        if (hours > 0) {
-            result = `${hours}小时`;
-        }
-        if (minutes > 0) {
-            result = result + `${minutes}分钟`;
-        }
-        // if (remainingSeconds > 0) {
-        //     result = result + `${remainingSeconds}秒`;
-        // }
-        return result + `${remainingSeconds}秒`;
+
+        const parts = [];
+        if (hours > 0) parts.push(`${zeroPad(hours)} 小时`);
+        if (minutes > 0) parts.push(`${zeroPad(minutes)} 分钟`);
+        parts.push(`${zeroPad(remainingSeconds)} 秒`);
+
+        return parts.join('');
+    };
+
+    // 补零
+    function zeroPad(n) {
+        return n.toString().padStart(2, '0');
     };
 
     function currentTime () {

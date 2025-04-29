@@ -93,29 +93,32 @@
         }
         const mined = roundToThreeDecimals(balance - startBalance)
 
-        console.log(`${currentTime} [监控中] Balance：${balance}Points | Speed：${speed}Cycles/s | 已挖到 ${mined} Points ｜ 已运行${convertMilliseconds(Date.now()-startTime)}`);
+        console.log(`${currentTime} [监控中] Balance：${balance}Points | Speed：${speed}Cycles/s | 已挖到 ${mined} Points ｜ 已运行${formatToChineseTime(Date.now()-startTime)}`);
     };
 
     function roundToThreeDecimals(num) {
         return Math.round(num * 1000) / 1000;
     }
 
-    function convertMilliseconds(ms) {
+    function formatToChineseTime(ms) {
+        if (isNaN(ms)) return "";
+
         const seconds = Math.floor(ms / 1000);
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const remainingSeconds = seconds % 60;
-        let result = "";
-        if (hours > 0) {
-            result = `${hours}小时`;
-        }
-        if (minutes > 0) {
-            result = result + `${minutes}分钟`;
-        }
-        // if (remainingSeconds > 0) {
-        //     result = result + `${remainingSeconds}秒`;
-        // }
-        return result + `${remainingSeconds}秒`;
+
+        const parts = [];
+        if (hours > 0) parts.push(`${zeroPad(hours)} 小时`);
+        if (minutes > 0) parts.push(`${zeroPad(minutes)} 分钟`);
+        parts.push(`${zeroPad(remainingSeconds)} 秒`);
+
+        return parts.join('');
+    };
+
+    // 补零
+    function zeroPad(n) {
+        return n.toString().padStart(2, '0');
     };
 
 

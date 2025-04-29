@@ -33,7 +33,7 @@
     let stuckTime = 0
     let startJobs = 0
 
-    console.log('等待[' + msToCNString(loadDelay) + ']后开始启动...');
+    console.log('等待[' + formatToChineseTime(loadDelay) + ']后开始启动...');
     setTimeout(() => {
         // 禁用刷新时的弹窗提示
         window.addEventListener('beforeunload', function(event) {
@@ -57,8 +57,8 @@
                     runingTimeDiff = Date.now() - startTime
                     const currentStats = getStats();
                     // console.log(`startJobs=${startJobs}, currentStats.jobs=${currentStats.jobs}`);
-                    console.log(`[状态更新] 已运行${msToCNString(runingTimeDiff)} | Completed ${currentStats.jobs - startJobs} Jobs`);
-                    // console.log(`[状态更新] 已运行[${msToCNString(runingTimeDiff)}] | Completed ${Number(currentStats.jobs) - Number(startJobs)} Jobs`);
+                    console.log(`[状态更新] 已运行${formatToChineseTime(runingTimeDiff)} | Completed ${currentStats.jobs - startJobs} Jobs`);
+                    // console.log(`[状态更新] 已运行[${formatToChineseTime(runingTimeDiff)}] | Completed ${Number(currentStats.jobs) - Number(startJobs)} Jobs`);
                     // console.log(`[状态更新] 已运行[${runingTimeDiff}] | Completed ${currentStats.jobs - startJobs} Jobs`);
 
                     if (currentStats.jobs === lastStats.jobs) {
@@ -69,7 +69,7 @@
                         const stuckTimeDiff = Date.now() - stuckTime;
                         // 当卡顿时长达到配置重连时间的 50% 时开始输出报警日志
                         if (stuckTimeDiff >= disconnectTimeout * 0.5) {
-                            console.log(`[卡顿警告] 已卡顿${msToCNString(stuckTimeDiff)}, ${msToCNString(disconnectTimeout - stuckTimeDiff)}后刷新页面！`);
+                            console.log(`[卡顿警告] 已卡顿${formatToChineseTime(stuckTimeDiff)}, ${formatToChineseTime(disconnectTimeout - stuckTimeDiff)}后刷新页面！`);
                             location.reload();
                         }
                     } else {
@@ -169,22 +169,25 @@
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    function msToCNString(ms) {
+    function formatToChineseTime(ms) {
+        if (isNaN(ms)) return "";
+
         const seconds = Math.floor(ms / 1000);
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const remainingSeconds = seconds % 60;
-        let result = "";
-        if (hours > 0) {
-            result = `${hours} 小时`
-        }
-        if (minutes > 0) {
-            result = result + `${minutes}分钟`
-        }
-        result = result + `${remainingSeconds}秒`
 
-        return result;
+        const parts = [];
+        if (hours > 0) parts.push(`${zeroPad(hours)} 小时`);
+        if (minutes > 0) parts.push(`${zeroPad(minutes)} 分钟`);
+        parts.push(`${zeroPad(remainingSeconds)} 秒`);
+
+        return parts.join('');
     };
 
+    // 补零
+    function zeroPad(n) {
+        return n.toString().padStart(2, '0');
+    };
 
 })();
