@@ -53,7 +53,9 @@
                     runingTimeDiff = Date.now() - startTime
                     const currentStats = getStats();
                     // console.log(`startJobs=${startJobs}, currentStats.jobs=${currentStats.jobs}`);
-                    console.log(`[状态更新] 已运行[${msToCNString(runingTimeDiff)}] | Completed ${currentStats.jobs - startJobs} Jobs`);
+                    console.log(`[状态更新] 已运行${msToCNString(runingTimeDiff)} | Completed ${currentStats.jobs - startJobs} Jobs`);
+                    // console.log(`[状态更新] 已运行[${msToCNString(runingTimeDiff)}] | Completed ${Number(currentStats.jobs) - Number(startJobs)} Jobs`);
+                    // console.log(`[状态更新] 已运行[${runingTimeDiff}] | Completed ${currentStats.jobs - startJobs} Jobs`);
 
                     if (currentStats.jobs === lastStats.jobs) {
                         if (stuckTime === 0) {
@@ -84,7 +86,7 @@
         // console.log(jobs)
 
         if (jobs === null) { return null;};
-        return { jobs: +jobs };
+        return { jobs: jobs };
     };
 
     async function clickButton(retry = 10) {
@@ -170,17 +172,14 @@
         const remainingSeconds = seconds % 60;
         let result = "";
         if (hours > 0) {
-            let hours = (hours >= 10) ? hours : `0${hours}`;
-            result = `${hours}小时`;
+            result = `${hours} 小时`
         }
         if (minutes > 0) {
-            let minutes = (minutes >= 10) ? minutes : `0${minutes}`;
-            result = result + `${minutes}分钟`;
+            result = result + `${minutes}分钟`
         }
-        if (minutes > 0) {
-            let remainingSeconds = (remainingSeconds >= 10) ? remainingSeconds : `0${remainingSeconds}`;
-        }
-        return result + `${remainingSeconds}秒`;
+        result = result + `${remainingSeconds}秒`
+
+        return result;
     };
 
 
