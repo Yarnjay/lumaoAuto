@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GataAuto
 // @namespace    https://app.gata.xyz/
-// @version      v20250429-2
+// @version      v20250430-1
 // @description  Gata Auto
 // @author       YuanJay
 // @match        https://app.gata.xyz/*
