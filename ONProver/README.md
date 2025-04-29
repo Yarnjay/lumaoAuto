@@ -6,11 +6,15 @@
 <img width="352" alt="image" src="https://github.com/user-attachments/assets/ffef986a-a6fd-4362-964b-0f3fea69fc8d" />
 
 
-### 2、安装tampermonkey
+### 2、启用开发模式
+<img width="1073" alt="image" src="https://github.com/user-attachments/assets/a3a9a940-a70d-4737-bf33-b9c4d671a338" />
+
+
+### 3、安装tampermonkey
 在 Chrom Google 扩展商店中查找 tampermonkey 并安装；<br/>
 https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebhmkfjojejmpbldmpobfkfo
 
-### 2、配置tampermonkey
+### 4、配置tampermonkey
 1、打开 管理面板<br/>
 <img width="190" alt="image" src="https://github.com/user-attachments/assets/48a334d2-9a41-478d-933b-9fdb7154f444" />
 2、打开 使用工具<br/>
