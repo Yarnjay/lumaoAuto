@@ -2,7 +2,7 @@
 // @name         ONProverAuto
 // @namespace    https://onprover.orochi.network/
 // @version      v20250429-2
-// @description  Happy day
+// @description  ONProver 全自动重连脚本
 // @author       YuanJay
 // @match        https://onprover.orochi.network/*
 // @icon         https://onprover.orochi.network/downasaur.svg

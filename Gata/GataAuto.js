@@ -2,7 +2,7 @@
 // @name         GataAuto
 // @namespace    https://app.gata.xyz/
 // @version      v20250430-2
-// @description  Gata Auto
+// @description  Gata 全自动重连脚本
 // @author       YuanJay
 // @match        https://app.gata.xyz/*
 // @icon         https://www.gata.xyz/logo.svg
