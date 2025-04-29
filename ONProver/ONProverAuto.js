@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         ONProverAuto
 // @namespace    https://onprover.orochi.network/
-// @version      v20250429-1
+// @version      v20250429-2
 // @description  Happy day
 // @author       YuanJay
 // @match        https://onprover.orochi.network/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net.cn
+// @icon         https://onprover.orochi.network/downasaur.svg
 // @grant        none
 // @updateURL    https://github.com/Yarnjay/lumaoAuto/blob/master/ONProver/ONProverAuto.js
 // @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/ONProver/ONProverAuto.js
