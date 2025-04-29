@@ -11,11 +11,13 @@
 // @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/NEXUS/NexusAuto.js
 // @license      AGPL-3.0-only
 // @charset      UTF-8
-
 // ==/UserScript==
 
 (function() {
     'use strict';
+    let startBalance = 0;
+    let isOneClick = true;
+    let startTime=Date.now();
 
     // 创建日志面板
     const logPanel = document.createElement('div');
@@ -23,7 +25,7 @@
         position: 'fixed',
         right: '10px',
         bottom: '10px',
-        width: '700px',
+        width: '850px',
         height: '200px',
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         padding: '10px',
@@ -59,6 +61,7 @@
             }
         };
 
+
         // 定义变量存储 setInterval 的返回值
         const interval = setInterval(() => {
             clickButton();
@@ -70,8 +73,8 @@
         const currentTime = new Date().toLocaleString();
         const noConnect = document.querySelector('p.text-center.text-white.font-bold');
         const btn = document.getElementById('connect-toggle-button');
-        const speedElm = document.querySelector('#speed-display');
         const balanceElm = document.querySelector('#balance-display');
+        const speedElm = document.querySelector('#speed-display');
 
         if (noConnect) {
             if (btn) {
@@ -84,8 +87,37 @@
 
         let speed = (speedElm) ? speedElm.textContent.trim() : 0;
         let balance = (balanceElm) ? balanceElm.textContent.trim() : 0;
+        if (isOneClick) {
+            startTime = Date.now();
+            startBalance = balance;
+            isOneClick = false;
+        }
+        const mined = roundToThreeDecimals(balance - startBalance)
 
-        console.log(`${currentTime} [监控中] Balance：${balance}Points | Speed：${speed}Cycles/s`);
+        console.log(`${currentTime} [监控中] Balance：${balance}Points | Speed：${speed}Cycles/s | 已挖到 ${mined} Points ｜ 已运行${convertMilliseconds(Date.now()-startTime)}`);
     };
+
+    function roundToThreeDecimals(num) {
+        return Math.round(num * 1000) / 1000;
+    }
+
+    function convertMilliseconds(ms) {
+        const seconds = Math.floor(ms / 1000);
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+        let result = "";
+        if (hours > 0) {
+            result = `${hours}小时`;
+        }
+        if (minutes > 0) {
+            result = result + `${minutes}分钟`;
+        }
+        // if (remainingSeconds > 0) {
+        //     result = result + `${remainingSeconds}秒`;
+        // }
+        return result + `${remainingSeconds}秒`;
+    };
+
 
 })();
