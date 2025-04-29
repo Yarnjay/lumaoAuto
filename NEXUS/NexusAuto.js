@@ -8,7 +8,7 @@
 // @icon         https://app.nexus.xyz/favicon.ico
 // @grant        none
 // @license      AGPL-3.0-only
-// @charset		 UTF-8
+// @charset      UTF-8
 
 // ==/UserScript==
 
