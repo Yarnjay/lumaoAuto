@@ -17,8 +17,10 @@ https://chromewebstore.google.com/detail/%E7%AF%A1%E6%94%B9%E7%8C%B4/dhdgffkkebh
 ### 4、配置tampermonkey
 1、打开 管理面板<br/>
 <img width="190" alt="image" src="https://github.com/user-attachments/assets/48a334d2-9a41-478d-933b-9fdb7154f444" />
+<br/>
 2、打开 使用工具<br/>
 <img width="1220" alt="image" src="https://github.com/user-attachments/assets/3cb1aac2-c8b1-4766-8528-e4b072b45bc0" />
+<br/>
 3、安装脚本<br/>
 1、从 github 中下载 ONProverAuto.js；<br/>
 2、在实用工具中选择从 “导入” 导入脚本；<br/>
