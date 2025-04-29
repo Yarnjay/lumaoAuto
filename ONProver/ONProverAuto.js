@@ -7,6 +7,8 @@
 // @match        https://onprover.orochi.network/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net.cn
 // @grant        none
+// @license      AGPL-3.0-only
+// @charset		 UTF-8
 // ==/UserScript==
 
 (function() {
