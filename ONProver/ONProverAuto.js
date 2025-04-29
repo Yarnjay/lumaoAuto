@@ -7,6 +7,8 @@
 // @match        https://onprover.orochi.network/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net.cn
 // @grant        none
+// @updateURL    https://github.com/Yarnjay/lumaoAuto/blob/master/ONProver/ONProverAuto.js
+// @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/ONProver/ONProverAuto.js
 // @license      AGPL-3.0-only
 // @charset      UTF-8
 // ==/UserScript==
