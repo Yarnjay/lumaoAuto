@@ -35,9 +35,13 @@
 
     console.log('等待[' + msToCNString(loadDelay) + ']后开始启动...');
     setTimeout(() => {
+        // 禁用刷新时的弹窗提示
+        window.addEventListener('beforeunload', function(event) {
+            event.stopImmediatePropagation();
+        });
+
         // 初始化日志面板
         initLog();
-        console.log("logPanel");
         main()
     }, loadDelay);
 
