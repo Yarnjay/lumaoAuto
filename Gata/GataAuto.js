@@ -42,7 +42,7 @@
 
         // 初始化日志面板
         initLog();
-        main()
+        main();
     }, loadDelay);
 
     function main() {
