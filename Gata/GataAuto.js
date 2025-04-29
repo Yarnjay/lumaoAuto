@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GataAuto
 // @namespace    https://app.gata.xyz/
-// @version      v20250430-2
+// @version      v20250430-3
 // @description  Gata 全自动重连脚本
 // @author       YuanJay
 // @match        https://app.gata.xyz/*
@@ -178,9 +178,9 @@
         const remainingSeconds = seconds % 60;
 
         const parts = [];
-        if (hours > 0) parts.push(`${zeroPad(hours)} 小时`);
-        if (minutes > 0) parts.push(`${zeroPad(minutes)} 分钟`);
-        parts.push(`${zeroPad(remainingSeconds)} 秒`);
+        if (hours > 0) parts.push(`${zeroPad(hours)}小时`);
+        if (minutes > 0) parts.push(`${zeroPad(minutes)}分钟`);
+        parts.push(`${zeroPad(remainingSeconds)}秒`);
 
         return parts.join('');
     };

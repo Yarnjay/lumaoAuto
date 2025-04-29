@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ONProverAuto
 // @namespace    https://onprover.orochi.network/
-// @version      v20250429-2
+// @version      v20250430-2
 // @description  ONProver 全自动重连脚本
 // @author       YuanJay
 // @match        https://onprover.orochi.network/*
@@ -10,7 +10,6 @@
 // @updateURL    https://github.com/Yarnjay/lumaoAuto/blob/master/ONProver/ONProverAuto.js
 // @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/ONProver/ONProverAuto.js
 // @license      AGPL-3.0-only
-// @charset      UTF-8
 // ==/UserScript==
 
 (function() {
@@ -98,7 +97,7 @@
                             stuckCounter++;
                             stuckTime = stuckCounter * checkDelay * 1000
 
-                            if (stuckTime >= disconnectTimeout * 60 * 1000 / 2) {
+                            if (stuckTime >= 2 * 60 * 1000) {
                                 console.log(`${currentTime()} [卡顿警告] ${formatToChineseTime(stuckTime)} 无变化, ${formatToChineseTime(disconnectTimeout * 60 * 1000 - stuckTime)}后重启！`);
                             }
 
@@ -136,9 +135,9 @@
         const remainingSeconds = seconds % 60;
 
         const parts = [];
-        if (hours > 0) parts.push(`${zeroPad(hours)} 小时`);
-        if (minutes > 0) parts.push(`${zeroPad(minutes)} 分钟`);
-        parts.push(`${zeroPad(remainingSeconds)} 秒`);
+        if (hours > 0) parts.push(`${zeroPad(hours)}小时`);
+        if (minutes > 0) parts.push(`${zeroPad(minutes)}分钟`);
+        parts.push(`${zeroPad(remainingSeconds)}秒`);
 
         return parts.join('');
     };
