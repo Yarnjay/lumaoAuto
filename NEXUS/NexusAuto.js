@@ -10,7 +10,6 @@
 // @updateURL    https://github.com/Yarnjay/lumaoAuto/blob/master/NEXUS/NexusAuto.js
 // @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/NEXUS/NexusAuto.js
 // @license      AGPL-3.0-only
-// @charset      UTF-8
 // ==/UserScript==
 
 (function() {

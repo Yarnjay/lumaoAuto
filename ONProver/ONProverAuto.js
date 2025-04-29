@@ -10,7 +10,6 @@
 // @updateURL    https://github.com/Yarnjay/lumaoAuto/blob/master/ONProver/ONProverAuto.js
 // @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/ONProver/ONProverAuto.js
 // @license      AGPL-3.0-only
-// @charset      UTF-8
 // ==/UserScript==
 
 (function() {
