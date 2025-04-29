@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NexusAuto
 // @namespace    https://app.nexus.xyz/
-// @version      v20250429-2
+// @version      v20250430-2
 // @description  Happy day
 // @author       YuanJay
 // @match        https://app.nexus.xyz/*
