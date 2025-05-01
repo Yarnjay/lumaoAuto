@@ -66,7 +66,7 @@
             const result = await clickButton();
             if (result) {
                 console.log("按钮点击成功，继续执行后续操作...");
-                if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：已开始挖矿...`);}
+                if (wecom) {sendWecomMessage(`✅ ${appName} | ${deviceName}\n已开始挖矿`);}
 
                 const interval = setInterval(() => {
                     runingTimeDiff = Date.now() - startTime;
@@ -87,13 +87,13 @@
                         if (stuckTimeDiff >= disconnectTimeout * warningThreshold) {
                             console.log(`[卡顿警告] ${message}`);
                             if (wecom && (sendCount === 1 || sendCount % 5 === 0)) {
-                                sendWecomMessage(`${appName} | ${deviceName}：${message}\n本次${status}`);
+                                sendWecomMessage(`⚠️ ${appName} | ${deviceName} \n${message}\n${status}`);
                                 sendCount++;
                             };
                         };
 
                         if (stuckTimeDiff >= disconnectTimeout * reloadThreshold) {
-                            if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：${message}\n本次${status}`)};
+                            if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：${message}\n${status}`)};
                             location.reload();
                         };
                     } else {
@@ -104,7 +104,7 @@
             } else {
                 const warnMessage = "重启失败，5分钟后自动重试"
                 console.log(warnMessage);
-                if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：\n重启失败，5分钟后自动重试,但有可能触发了人类验证，若后续未收到正常启动的信息，请登录人工检查！`);};
+                if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n重启失败，5分钟后自动重试\n已触发验证机制，需人工介入`);};
                 setTimeout(() => {
                     location.reload();
                 }, clickAvailableReloadDelay);
@@ -226,7 +226,7 @@
                 'X-API-Key': wecomAPIKey
             },
             data: JSON.stringify({  // 需要将数据转为JSON字符串
-                'content': msg
+                'content': `${msg}\n${new Date().toLocaleString()}`,
             }),
             success: function(result) {
                 console.log("发送成功:", result.responseText);
