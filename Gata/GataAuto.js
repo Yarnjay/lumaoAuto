@@ -19,7 +19,7 @@
     const seconds = 1 * 1000;
 
     // ######  告警信息配置 ########
-    const wecom = false //true 或者 false ，true时开启通过企业微信的应用接收告警
+    const wecom = true //true 或者 false ，true时开启通过企业微信的应用接收告警
     const wecomAPIUrl = ""; // API URL
     const wecomAPIKey = ""; // 用户的 apikey
     const deviceName = ""; // 设备名称
@@ -31,7 +31,7 @@
     const reloadThreshold = 1; // 100%时触发自动刷新
 
     // 自动点击失败后重试的时间
-    const  clickAvailableReloadDelay =random(3, 6) * minutes;
+    const clickAvailableReloadDelay = random(3, 6) * minutes;
     //单位：秒；取随机数，页面加载后等待一段时间在连，建议最小5秒以上；
     const loadDelay = random(5, 10) * seconds;
     // 单位：秒； 状态检测间隔，不建议修改
@@ -231,7 +231,8 @@
             success: function(result) {
                 console.log("发送成功:", result.responseText);
             },
-            error: function(xhr, status, error) {  // 建议添加错误处理
+            error: function(xhr, status, error) {
+                console.log("❌发送失败:", error);
                 console.error("发送失败:", error);
             }
         });
