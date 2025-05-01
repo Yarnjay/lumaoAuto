@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GataAuto
 // @namespace    https://app.gata.xyz/
-// @version      v20250501-10
+// @version      v20250502-1
 // @description  Gata 全自动重连脚本
 // @author       YuanJay
 // @match        https://app.gata.xyz/*
@@ -42,6 +42,7 @@
     let startTime = 0;
     let stuckTime = 0;
     let startJobs = 0;
+    let sendCount = 0;
 
     console.log('等待[' + formatToChineseTime(loadDelay) + ']后开始启动...');
     setTimeout(() => {
@@ -77,14 +78,20 @@
                             stuckTime = Date.now();
                         };
                         const stuckTimeDiff = Date.now() - stuckTime;
+                        let remainingTime = disconnectTimeout - stuckTimeDiff;
+                        if (remainingTime <= 0) {remainingTime = 0;};
+                        const message = `已卡顿${formatToChineseTime(stuckTimeDiff)}, ${formatToChineseTime(remainingTime)}后刷新页面！`;
 
                         if (stuckTimeDiff >= disconnectTimeout * warningThreshold) {
-                            const remainingTime = disconnectTimeout - stuckTimeDiff;
-                            const message = `已卡顿${formatToChineseTime(stuckTimeDiff)}, ${formatToChineseTime(remainingTime)}后刷新页面！`;
                             console.log(`[卡顿警告] ${message}`);
-                            if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：${message}\n本次${status}`)};
+                            if (wecom && (sendCount === 1 || sendCount % 5 === 0)) {
+                                sendWecomMessage(`${appName} | ${deviceName}：${message}\n本次${status}`);
+                                sendCount++;
+                            };
                         };
+
                         if (stuckTimeDiff >= disconnectTimeout * reloadThreshold) {
+                            if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：${message}\n本次${status}`)};
                             location.reload();
                         };
                     } else {
