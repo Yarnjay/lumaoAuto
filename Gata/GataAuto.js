@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         GataAuto
 // @namespace    https://app.gata.xyz/
-// @version      v20250430-3
+// @version      v20250501-10
 // @description  Gata 全自动重连脚本
 // @author       YuanJay
 // @match        https://app.gata.xyz/*
 // @icon         https://www.gata.xyz/logo.svg
 // @grant        none
+// @require      https://code.jquery.com/jquery-3.7.1.min.js
 // @updateURL    https://github.com/Yarnjay/lumaoAuto/blob/master/Gata/GataAuto.js
 // @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/Gata/GataAuto.js
 // @license      AGPL-3.0-only
@@ -17,8 +18,17 @@
     const minutes = 60 * 1000;
     const seconds = 1 * 1000;
 
+    // ######  告警信息配置 ########
+    const wecomAPIUrl = ""; // API URL
+    const wecomAPIKey = ""; // 用户的 apikey
+    const deviceName = ""; // 设备名称
+    const appName = "Gata";
+
     // 单位：分钟； 断联超时重新刷新页面的时间
     const disconnectTimeout = random(5, 15) * minutes;
+    const warningThreshold = 0.5; // 50%时触发告警的日志输出以及一次微信告警
+    const reloadThreshold = 1; // 100%时触发自动刷新
+
     //单位：秒；取随机数，页面加载后等待一段时间在连，建议最小5秒以上；
     const loadDelay = random(5, 10) * seconds;
     // 单位：秒； 状态检测间隔，不建议修改
@@ -28,10 +38,9 @@
     const originalLog = console.log;
     const logPanel = document.createElement('div');
 
-    let startTime = 0
-    let firstClickButton = true;
-    let stuckTime = 0
-    let startJobs = 0
+    let startTime = 0;
+    let stuckTime = 0;
+    let startJobs = 0;
 
     console.log('等待[' + formatToChineseTime(loadDelay) + ']后开始启动...');
     setTimeout(() => {
@@ -53,32 +62,41 @@
             const result = await clickButton();
             if (result) {
                 console.log("按钮点击成功，继续执行后续操作...");
+                sendWecomMessage(`${deviceName}的[${appName}]已开始挖矿...`);
                 const interval = setInterval(() => {
-                    runingTimeDiff = Date.now() - startTime
+                    runingTimeDiff = Date.now() - startTime;
                     const currentStats = getStats();
                     // console.log(`startJobs=${startJobs}, currentStats.jobs=${currentStats.jobs}`);
-                    console.log(`[状态更新] 已运行${formatToChineseTime(runingTimeDiff)} | Completed ${currentStats.jobs - startJobs} Jobs`);
-                    // console.log(`[状态更新] 已运行[${formatToChineseTime(runingTimeDiff)}] | Completed ${Number(currentStats.jobs) - Number(startJobs)} Jobs`);
-                    // console.log(`[状态更新] 已运行[${runingTimeDiff}] | Completed ${currentStats.jobs - startJobs} Jobs`);
+                    const status = `共运行${formatToChineseTime(runingTimeDiff)} | Completed ${currentStats.jobs - startJobs} Jobs`;
+                    console.log(`[状态更新] ${status}`);
 
                     if (currentStats.jobs === lastStats.jobs) {
                         if (stuckTime === 0) {
                             stuckTime = Date.now();
                         };
-
                         const stuckTimeDiff = Date.now() - stuckTime;
-                        // 当卡顿时长达到配置重连时间的 50% 时开始输出报警日志
-                        if (stuckTimeDiff >= disconnectTimeout * 0.5) {
-                            console.log(`[卡顿警告] 已卡顿${formatToChineseTime(stuckTimeDiff)}, ${formatToChineseTime(disconnectTimeout - stuckTimeDiff)}后刷新页面！`);
+
+                        if (stuckTimeDiff >= disconnectTimeout * warningThreshold) {
+                            const remainingTime = disconnectTimeout - stuckTimeDiff;
+                            const message = `已卡顿${formatToChineseTime(stuckTimeDiff)}, ${formatToChineseTime(remainingTime)}后刷新页面！`;
+                            console.log(`[卡顿警告] ${message}`);
+                            sendWecomMessage(`${deviceName}的${appName}${message}\n本次${status}`);
+                        };
+                        if (stuckTimeDiff >= disconnectTimeout * reloadThreshold) {
                             location.reload();
-                        }
+                        };
                     } else {
                         stuckTime = 0
                         lastStats = currentStats;
                     };
                 }, checkDelay);
             } else {
-                console.log("按钮点击失败，停止执行。");
+                const warnMessage = "重启失败，5分钟后自动重试"
+                console.log(warnMessage);
+                sendWecomMessage(`${deviceName}的[${appName}] 5分钟后自动重试，但有可能触发了人类验证，若后续未收到正常启动的信息，请登录人工检查！`)
+                setTimeout(() => {
+                    location.reload();
+                }, 5 * minutes);
             };
         })();
 
@@ -126,7 +144,6 @@
             }, 2000); // 直接使用毫秒数
         });
     }
-
 
     function initLog() {
         // 创建日志面板
@@ -185,9 +202,27 @@
         return parts.join('');
     };
 
-    // 补零
-    function zeroPad(n) {
+    function zeroPad(n) { // 补零
         return n.toString().padStart(2, '0');
     };
 
+    function sendWecomMessage(msg) {
+        $.ajax({
+            url: wecomAPIUrl,
+            type: "POST",  // 建议明确指定请求方法
+            headers: {
+                'Content-Type': 'application/json',  // 注意大小写规范
+                'X-API-Key': wecomAPIKey
+            },
+            data: JSON.stringify({  // 需要将数据转为JSON字符串
+                'content': msg
+            }),
+            success: function(result) {
+                console.log("发送成功:", result.responseText);
+            },
+            error: function(xhr, status, error) {  // 建议添加错误处理
+                console.error("发送失败:", error);
+            }
+        });
+    };
 })();
