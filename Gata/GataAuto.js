@@ -19,6 +19,7 @@
     const seconds = 1 * 1000;
 
     // ######  告警信息配置 ########
+    const wecom = false //true 或者 false ，true时开启通过企业微信的应用接收告警
     const wecomAPIUrl = ""; // API URL
     const wecomAPIKey = ""; // 用户的 apikey
     const deviceName = ""; // 设备名称
@@ -62,7 +63,8 @@
             const result = await clickButton();
             if (result) {
                 console.log("按钮点击成功，继续执行后续操作...");
-                sendWecomMessage(`${deviceName}的[${appName}]已开始挖矿...`);
+                if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：已开始挖矿...`);}
+
                 const interval = setInterval(() => {
                     runingTimeDiff = Date.now() - startTime;
                     const currentStats = getStats();
@@ -80,7 +82,7 @@
                             const remainingTime = disconnectTimeout - stuckTimeDiff;
                             const message = `已卡顿${formatToChineseTime(stuckTimeDiff)}, ${formatToChineseTime(remainingTime)}后刷新页面！`;
                             console.log(`[卡顿警告] ${message}`);
-                            sendWecomMessage(`${deviceName}的${appName}${message}\n本次${status}`);
+                            if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：${message}\n本次${status}`)};
                         };
                         if (stuckTimeDiff >= disconnectTimeout * reloadThreshold) {
                             location.reload();
@@ -93,7 +95,7 @@
             } else {
                 const warnMessage = "重启失败，5分钟后自动重试"
                 console.log(warnMessage);
-                sendWecomMessage(`${deviceName}的[${appName}] 5分钟后自动重试，但有可能触发了人类验证，若后续未收到正常启动的信息，请登录人工检查！`)
+                if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：\n重启失败，5分钟后自动重试,但有可能触发了人类验证，若后续未收到正常启动的信息，请登录人工检查！`);};
                 setTimeout(() => {
                     location.reload();
                 }, 5 * minutes);
@@ -107,7 +109,7 @@
         const jobs = (jobsElm) ? jobsElm.textContent.trim() : null;
         // console.log(jobs)
 
-        if (jobs === null) { return null;};
+        if (jobs === null || isNaN(Number(jobs))) { return null;};
         return { jobs: jobs };
     };
 
