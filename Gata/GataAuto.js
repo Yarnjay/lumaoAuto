@@ -30,6 +30,8 @@
     const warningThreshold = 0.5; // 50%时触发告警的日志输出以及一次微信告警
     const reloadThreshold = 1; // 100%时触发自动刷新
 
+    // 自动点击失败后重试的时间
+    const  clickAvailableReloadDelay =random(3, 6) * minutes;
     //单位：秒；取随机数，页面加载后等待一段时间在连，建议最小5秒以上；
     const loadDelay = random(5, 10) * seconds;
     // 单位：秒； 状态检测间隔，不建议修改
@@ -105,7 +107,7 @@
                 if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：\n重启失败，5分钟后自动重试,但有可能触发了人类验证，若后续未收到正常启动的信息，请登录人工检查！`);};
                 setTimeout(() => {
                     location.reload();
-                }, 5 * minutes);
+                }, clickAvailableReloadDelay);
             };
         })();
 
