@@ -66,7 +66,7 @@
             const result = await clickButton();
             if (result) {
                 console.log("按钮点击成功，继续执行后续操作...");
-                if (wecom) {sendWecomMessage(`✅ ${appName} | ${deviceName}\n已开始挖矿`);}
+                if (wecom) {sendWecomMessage(`✅ ${appName} | ${deviceName}\n成功启动！`);}
 
                 const interval = setInterval(() => {
                     runingTimeDiff = Date.now() - startTime;
@@ -102,9 +102,9 @@
                     };
                 }, checkDelay);
             } else {
-                const warnMessage = "重启失败，5分钟后自动重试"
+                const warnMessage = `重启失败，${formatToChineseTime(clickAvailableReloadDelay)}后自动重试`
                 console.log(warnMessage);
-                if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n重启失败，5分钟后自动重试\n已触发验证机制，需人工介入`);};
+                if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n重启失败，${formatToChineseTime(clickAvailableReloadDelay)}后自动重试\n可能已触发验证机制，需人工介入`);};
                 setTimeout(() => {
                     location.reload();
                 }, clickAvailableReloadDelay);
