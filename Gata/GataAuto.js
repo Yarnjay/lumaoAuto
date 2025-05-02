@@ -152,7 +152,7 @@
                     clearInterval(interval);
                     return resolve(false); // 失败时解析 Promise
                 }
-            }, 2000); // 直接使用毫秒数
+            }, 4000); // 直接使用毫秒数
         });
     }
 
