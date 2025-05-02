@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GataAuto
 // @namespace    https://app.gata.xyz/
-// @version      v20250502-1
+// @version      v20250502-2
 // @description  Gata 全自动重连脚本
 // @author       YuanJay
 // @match        https://app.gata.xyz/*
