@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NexusAuto
 // @namespace    https://app.nexus.xyz/
-// @version      v2025-05-04-01
+// @version      v20250504-01
 // @description  Gata 全自动重连脚本
 // @author       YuanJay
 // @match        https://app.nexus.xyz/*
@@ -15,7 +15,7 @@
 
 (function() {
     'use strict';
-    const minutes = 60 * 1000;
+    //const minutes = 60 * 1000;
     const seconds = 1 * 1000;
 
     // ######  告警信息配置 ########
@@ -26,10 +26,10 @@
     const appName = "Nexus";
 
     // 单位：分钟； 断联超时重新刷新页面的时间
-    const disconnectTimeout = random(1, 3) * minutes;
+    const disconnectTimeout = random(1, 3) * random(1, 59) * seconds;
 
     // 自动点击失败后重试的时间
-    const clickAvailableReloadDelay = random(3, 6) * minutes;
+    const clickAvailableReloadDelay = random(3, 6) *  random(1, 59) * seconds;
     //单位：秒；取随机数，页面加载后等待一段时间在连，建议最小5秒以上；
     const loadDelay = random(5, 8) * seconds;
     // 单位：秒； 状态检测间隔，不建议修改
