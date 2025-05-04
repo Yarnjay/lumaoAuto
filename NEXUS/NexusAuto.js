@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NexusAuto
 // @namespace    https://app.nexus.xyz/
-// @version      v2025-05-03-01
+// @version      v2025-05-04-01
 // @description  Gata 全自动重连脚本
 // @author       YuanJay
 // @match        https://app.nexus.xyz/*
