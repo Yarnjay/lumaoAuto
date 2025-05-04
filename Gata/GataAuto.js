@@ -1,15 +1,15 @@
 // ==UserScript==
-// @name         GataAuto
-// @namespace    https://app.gata.xyz/
-// @version      v20250502-2
+// @name         NexusAuto
+// @namespace    https://app.nexus.xyz/
+// @version      v2025-05-04-01
 // @description  Gata 全自动重连脚本
 // @author       YuanJay
-// @match        https://app.gata.xyz/*
-// @icon         https://www.gata.xyz/logo.svg
+// @match        https://app.nexus.xyz/*
+// @icon         https://app.nexus.xyz/favicon.ico
 // @grant        none
 // @require      https://code.jquery.com/jquery-3.7.1.min.js
-// @updateURL    https://github.com/Yarnjay/lumaoAuto/blob/master/Gata/GataAuto.js
-// @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/Gata/GataAuto.js
+// @updateURL    https://github.com/Yarnjay/lumaoAuto/blob/master/NEXUS/NexusAuto.js
+// @downloadURL  https://github.com/Yarnjay/lumaoAuto/blob/master/NEXUS/NexusAuto.js
 // @license      AGPL-3.0-only
 // ==/UserScript==
 
@@ -23,17 +23,15 @@
     const wecomAPIUrl = ""; // API URL
     const wecomAPIKey = ""; // 用户的 apikey
     const deviceName = ""; // 设备名称
-    const appName = "Gata";
+    const appName = "Nexus";
 
     // 单位：分钟； 断联超时重新刷新页面的时间
-    const disconnectTimeout = random(5, 15) * minutes;
-    const warningThreshold = 0.5; // 50%时触发告警的日志输出以及一次微信告警
-    const reloadThreshold = 1; // 100%时触发自动刷新
+    const disconnectTimeout = random(1, 3) * minutes;
 
     // 自动点击失败后重试的时间
     const clickAvailableReloadDelay = random(3, 6) * minutes;
     //单位：秒；取随机数，页面加载后等待一段时间在连，建议最小5秒以上；
-    const loadDelay = random(5, 10) * seconds;
+    const loadDelay = random(5, 8) * seconds;
     // 单位：秒； 状态检测间隔，不建议修改
     const checkDelay = 10 * seconds;
 
@@ -42,9 +40,7 @@
     const logPanel = document.createElement('div');
 
     let startTime = 0;
-    let stuckTime = 0;
-    let startJobs = 0;
-    let sendCount = 0;
+    let startPoints = 0;
 
     console.log('等待[' + formatToChineseTime(loadDelay) + ']后开始启动...');
     setTimeout(() => {
@@ -59,92 +55,93 @@
     }, loadDelay);
 
     function main() {
-        let lastStats = { jobs: null };
         let runingTimeDiff = 0; // 运行时长
+        let isSent = false;
 
         (async function() {
             const result = await clickButton();
             if (result) {
                 console.log("按钮点击成功，继续执行后续操作...");
-                if (wecom) {sendWecomMessage(`✅ ${appName} | ${deviceName}\n成功启动！`);}
-
+                if (wecom) {sendWecomMessage(`✅ ${appName} | ${deviceName}\n已启动，挖矿中...`);};
                 const interval = setInterval(() => {
                     runingTimeDiff = Date.now() - startTime;
                     const currentStats = getStats();
                     // console.log(`startJobs=${startJobs}, currentStats.jobs=${currentStats.jobs}`);
-                    const status = `共运行${formatToChineseTime(runingTimeDiff)} | Completed ${currentStats.jobs - startJobs} Jobs`;
+                    const status = `运行${formatToChineseTime(runingTimeDiff)} | 获得[${currentStats.balance - startPoints}]Points｜Speed[${currentStats.speed}]Cycles/s`;
                     console.log(`[状态更新] ${status}`);
 
-                    if (currentStats.jobs === lastStats.jobs) {
-                        if (stuckTime === 0) {
-                            stuckTime = Date.now();
+                    if (!currentStats.connect) {
+                        const message = `已断联，${formatToChineseTime(disconnectTimeout)}后自动重连！`
+                        if (wecom && !isSent) {
+                            sendWecomMessage(`${appName} | ${deviceName}\n${message}\n${status}`);
+                            isSent = true;
                         };
-                        const stuckTimeDiff = Date.now() - stuckTime;
-                        let remainingTime = disconnectTimeout - stuckTimeDiff;
-                        if (remainingTime <= 0) {remainingTime = 0;};
-                        const message = `已卡顿${formatToChineseTime(stuckTimeDiff)}, ${formatToChineseTime(remainingTime)}后刷新页面！`;
-
-                        if (stuckTimeDiff >= disconnectTimeout * warningThreshold) {
-                            console.log(`[卡顿警告] ${message}`);
-                            if (wecom && (sendCount === 1 || sendCount % 5 === 0)) {
-                                sendWecomMessage(`⚠️ ${appName} | ${deviceName} \n${message}\n${status}`);
-                                sendCount++;
-                            };
-                        };
-
-                        if (stuckTimeDiff >= disconnectTimeout * reloadThreshold) {
-                            if (wecom) {sendWecomMessage(`${appName} | ${deviceName}：${message}\n${status}`)};
+                        setTimeout(() => {
                             location.reload();
-                        };
-                    } else {
-                        stuckTime = 0
-                        lastStats = currentStats;
+                        },disconnectTimeout);
                     };
                 }, checkDelay);
             } else {
-                const warnMessage = `重启失败，${formatToChineseTime(clickAvailableReloadDelay)}后自动重试`
-                console.log(warnMessage);
-                if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n重启失败，${formatToChineseTime(clickAvailableReloadDelay)}后自动重试\n可能已触发验证机制，需人工介入`);};
-                setTimeout(() => {
-                    location.reload();
-                }, clickAvailableReloadDelay);
+                if (isLogin()) {
+                    const message = `启动失败，${formatToChineseTime(clickAvailableReloadDelay)}后自动重试`
+                    console.log(message);
+                    if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n${message}`);};
+                    setTimeout(() => {
+                        location.reload();
+                    }, clickAvailableReloadDelay);
+                }else{
+                    const message = `未登录或已掉线，请手动登录后重试！`
+                    console.log(message);
+                    if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n${message}`);};
+                };
             };
         })();
+    };
 
+    function isLogin() {
+        console.log(document.body.innerText.trim().toLowerCase())
+        if (document.body.innerText.trim().toLowerCase().includes('you need to sign up first sign up to earn points')) {
+            return false;
+        };
+        return true;
     };
 
     function getStats() {
-        const jobsElm = document.querySelector('span.text-\\[18px\\].leading-\\[21\\.78px\\].text-aggGrey800');
-        const jobs = (jobsElm) ? jobsElm.textContent.trim() : null;
-        // console.log(jobs)
+        const notConnect = document.querySelector('p.text-center.text-white.font-bold');
+        const balance = document.querySelector('#balance-display');
+        const speed = document.querySelector('#speed-display');
 
-        if (jobs === null || isNaN(Number(jobs))) { return null;};
-        return { jobs: jobs };
+        let balancePoints = (balance) ? balance.textContent.trim() : 0;
+        let speedCycles = (speed) ? speed.textContent.trim() : 0;
+        let connect = (notConnect) ? false : true;
+
+        return {
+            connect: connect,
+            balance: balancePoints,
+            speed: speedCycles
+        };
     };
 
     async function clickButton(retry = 10) {
+        const btn = document.querySelector('#connect-toggle-button');
+        if (!btn) {
+            console.error("[错误] 未找到按钮");
+            return false; // 直接返回
+        }
+        btn.click();
+
         let attempts = 0;
-
         return new Promise((resolve) => {
-            const btn = document.querySelector('button.group');
-
-            if (!btn) {
-                console.error("[错误] 未找到按钮");
-                return resolve(false); // 直接返回
-            }
-
-            btn.click();
             const interval = setInterval(() => {
                 const state = getStats();
-
-                if (state) {
+                if (state.connect) {
                     if (startTime === 0) { // 只在第一次点击时记录时间
                         startTime = Date.now();
-                        startJobs = state.jobs;
+                        startPoints = state.balance;
                     }
                     clearInterval(interval); // 成功后清除定时器
                     return resolve(true);
-                }
+                };
 
                 attempts++;
                 if (attempts >= retry) {
@@ -229,11 +226,11 @@
                 'content': `${msg}\n${new Date().toLocaleString()}`,
             }),
             success: function(result) {
-                console.log("发送成功:", result.responseText);
+                console.log("发送成功:", result);
             },
-            error: function(xhr, status, error) {
-                console.log("❌发送失败:", error);
-                console.error("发送失败:", error);
+            error: function(result, xhr, status, error) {
+                console.log("❌发送失败:", result, xhr, status, error);
+                console.error("发送失败:", result, xhr, status, error);
             }
         });
     };
