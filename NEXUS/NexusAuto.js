@@ -43,7 +43,6 @@
     let startPoints = 0;
 
     console.log('等待[' + formatToChineseTime(loadDelay) + ']后开始启动...');
-
     setTimeout(() => {
         // 禁用刷新时的弹窗提示
         window.addEventListener('beforeunload', function(event) {
@@ -63,8 +62,7 @@
             const result = await clickButton();
             if (result) {
                 console.log("按钮点击成功，继续执行后续操作...");
-                if (wecom) {sendWecomMessage(`✅ ${appName} | ${deviceName}\n已启动，挖矿中...`);}
-
+                if (wecom) {sendWecomMessage(`✅ ${appName} | ${deviceName}\n已启动，挖矿中...`);};
                 const interval = setInterval(() => {
                     runingTimeDiff = Date.now() - startTime;
                     const currentStats = getStats();
@@ -84,14 +82,28 @@
                     };
                 }, checkDelay);
             } else {
-                const message = `重启失败，${formatToChineseTime(clickAvailableReloadDelay)}后自动重试`
-                console.log(message);
-                if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n重启失败，${formatToChineseTime(clickAvailableReloadDelay)}后自动重试`);};
-                setTimeout(() => {
-                    location.reload();
-                }, clickAvailableReloadDelay);
+                if (isLogin()) {
+                    const message = `启动失败，${formatToChineseTime(clickAvailableReloadDelay)}后自动重试`
+                    console.log(message);
+                    if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n${message}`);};
+                    setTimeout(() => {
+                        location.reload();
+                    }, clickAvailableReloadDelay);
+                }else{
+                    const message = `未登录或已掉线，请手动登录后重试！`
+                    console.log(message);
+                    if (wecom) {sendWecomMessage(`⚠️⚠️ ${appName} | ${deviceName}：\n${message}`);};
+                };
             };
         })();
+    };
+
+    function isLogin() {
+        console.log(document.body.innerText.trim().toLowerCase())
+        if (document.body.innerText.trim().toLowerCase().includes('you need to sign up first sign up to earn points')) {
+            return false;
+        };
+        return true;
     };
 
     function getStats() {
@@ -114,7 +126,7 @@
         const btn = document.querySelector('#connect-toggle-button');
         if (!btn) {
             console.error("[错误] 未找到按钮");
-            return resolve(false); // 直接返回
+            return false; // 直接返回
         }
         btn.click();
 
